@@ -33,9 +33,10 @@ Tensor flatten_indices(const Tensor& indices, IntArrayRef full_size, bool force_
     indices_mult_cpu_vec.reserve(sparse_dim);
     int64_t mult = 1;
     for (int64_t i = sparse_dim - 1; i >= 0; i--) {
-      indices_mult_cpu_vec[i] = mult;
+      indices_mult_cpu_vec.push_back(mult);
       mult *= full_size[i];
     }
+    std::reverse(indices_mult_cpu_vec.begin(), indices_mult_cpu_vec.end());
     auto indices_mult_cpu = at::from_blob(
         indices_mult_cpu_vec.data(),
         // NOLINTNEXTLINE(bugprone-argument-comment)
